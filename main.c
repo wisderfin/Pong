@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 
 int gui(int x_ball, int y_ball, int y_right, int y_left, int score_right, int score_left){//отрисовка
     for (int i=0; i < 101*21+1; i++){ 
@@ -57,11 +57,30 @@ int control_rocket(){// обработка клавиш
     
 }
 
+int control_ball(int y_left, int y_right, int modul_x, int modul_y){
+    int result = 0;
+    if (modul_x == -1 && modul_y == -1){
+        result = 0;
+    }
+    else if (modul_x == -1 && modul_y == 1){
+        result = 1;
+    }
+    else if (modul_x == 1 && modul_y == -1){
+        result = 2;
+    }
+    else if (modul_x == 1 && modul_y == 1){
+        result = 3;
+    }
+    return result;
+}
+
 int main(){
     int x_ball = 51;
     int y_ball = 11;
     int y_left = 10;
     int y_right = 10;
+    int modul_x = 1;
+    int modul_y = 1;
     int score_right = 0;
     int score_left = 0;
     gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
@@ -79,7 +98,31 @@ int main(){
         else if (key == 4 && y_right < 18){//правая ракетка вниз
             y_right++;
         }
+        
+        int key_ball = control_ball(y_left, y_right, modul_x, modul_y);
+        if (key_ball == 0){
+            x_ball--;
+            y_ball--;}
+        else if (key_ball == 1){
+            x_ball--;
+            y_ball++;}
+        else if (key_ball == 2){
+            x_ball++;
+            y_ball--;}
+        else if (key_ball == 3){
+            x_ball++;
+            y_ball++;}
+        
+        if (x_ball < 1 || x_ball > 101){
+            x_ball = 51;
+            y_ball = 10;
+        }
+        else if (y_ball == 2 || y_ball == 20){
+            modul_y = modul_y*(-1);
+        }
+
+        system("clear");
         gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
     }
     
-}
+}          
