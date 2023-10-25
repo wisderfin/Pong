@@ -57,8 +57,12 @@ int control_rocket(){// обработка клавиш
     
 }
 
-int control_ball(int y_left, int y_right, int modul_x, int modul_y){
-    int result = 0;
+int control_ball(int y_left, int y_right, int x_ball, int y_ball, int modul_x, int modul_y){
+    int result;
+    for (int i = 0; i < 4; i++){
+        if (y_left == y_ball + i){
+            result = -1;
+        }}
     if (modul_x == -1 && modul_y == -1){
         result = 0;
     }
@@ -99,7 +103,7 @@ int main(){
             y_right++;
         }
         
-        int key_ball = control_ball(y_left, y_right, modul_x, modul_y);
+        int key_ball = control_ball(y_left, y_right, x_ball, y_ball, modul_x, modul_y);
         if (key_ball == 0){
             x_ball--;
             y_ball--;}
@@ -112,6 +116,9 @@ int main(){
         else if (key_ball == 3){
             x_ball++;
             y_ball++;}
+        else if (key_ball == -1){
+            modul_x*(-1);
+        }
         
         if (x_ball < 1 || x_ball > 101){
             x_ball = 51;
