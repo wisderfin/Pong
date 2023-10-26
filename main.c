@@ -35,7 +35,7 @@ int gui(int x_ball, int y_ball, int y_right, int y_left, int score_right, int sc
 int control_rocket(){// обработка клавиш
     char key;
     int result;
-    scanf("%c", &key);
+    scanf(" %c", &key);
     if (key == 'a'){
         result = 1;
     }
@@ -59,11 +59,10 @@ int control_rocket(){// обработка клавиш
 
 int control_ball(int y_left, int y_right, int x_ball, int y_ball, int modul_x, int modul_y){
     int result;
-    for (int i = 0; i < 4; i++){
-        if (y_left == y_ball + i){
+    if (((y_left == y_ball && x_ball == 2) || (y_right == y_ball && x_ball == 99)) || ((y_left + 1 == y_ball && x_ball == 2) || (y_right + 1 == y_ball && x_ball == 99)) || ((y_left + 2 == y_ball && x_ball == 2) || (y_right + 2 == y_ball && x_ball == 99))){
             result = -1;
-        }}
-    if (modul_x == -1 && modul_y == -1){
+        }
+    else if (modul_x == -1 && modul_y == -1){
         result = 0;
     }
     else if (modul_x == -1 && modul_y == 1){
@@ -89,6 +88,8 @@ int main(){
     int score_left = 0;
     gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
     while (1){
+        system("clear");
+        gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
         int key = control_rocket();
         if (key == 1 && y_left > 2){//левая ракетка вверх
             y_left--;
@@ -102,6 +103,9 @@ int main(){
         else if (key == 4 && y_right < 18){//правая ракетка вниз
             y_right++;
         }
+
+        
+        
         
         int key_ball = control_ball(y_left, y_right, x_ball, y_ball, modul_x, modul_y);
         if (key_ball == 0){
@@ -117,19 +121,35 @@ int main(){
             x_ball++;
             y_ball++;}
         else if (key_ball == -1){
-            modul_x*(-1);
+           modul_x = modul_x*(-1);
+           if (x_ball == 2){
+                x_ball++;
+           }
+           else if (x_ball == 99){
+                x_ball--;
+           }
         }
         
-        if (x_ball < 1 || x_ball > 101){
+        if (x_ball < 1 ){
             x_ball = 51;
             y_ball = 10;
+            score_left++;
+        }
+        else if (x_ball > 101)
+        {
+            x_ball = 51;
+            y_ball = 10;
+            score_right++;
         }
         else if (y_ball == 2 || y_ball == 20){
             modul_y = modul_y*(-1);
         }
-
-        system("clear");
-        gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
+        if (score_left == 21 || score_right == 21){
+            system("clear");
+            gui(x_ball, y_ball, y_right, y_left, score_right, score_left);
+            printf("\nИгра окончена!!!");
+            break;
+        }
     }
     
 }          
